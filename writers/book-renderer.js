@@ -2,7 +2,7 @@
 
 var fs 			= require('fs');
 
-var through			= require('through2');
+var through		= require('through2');
 var colors 			= require('colors');
 
 var 	Canvas 		= require('canvas'),
@@ -66,13 +66,13 @@ module.exports = function( constraint, renderer, totalwidth, totalheight, pixelS
 
 						var pt = points[ pageBase + (i * width) + j ];
 
-						if ( constraint( pt ) ) {
+						if ( constraint( pt, i, j ) ) {
 
 							pt.x( Math.round( j * pixelSize ) );
 
 							pt.y( Math.round( i * pixelSize ) );
 
-							renderer.render( pt, context, pixelSize, j, i );
+							renderer.render( pt, context, pixelSize, j, i, widthIndices.length - 1 );
 
 						}
 					}
@@ -110,11 +110,19 @@ function RGBPoint( serialized ) {
 	var G = serialized.slice( 2,4 );
 	var B = serialized.slice( 4,6 );
 
+	var X = parseInt( serialized.slice( 0,2 ), 16 );
+	var Y = parseInt( serialized.slice( 2,4 ), 16 );
+	var Z = parseInt( serialized.slice( 4,6 ), 16 );
+
 	var x, y;
 
 	self.r = function() { return R; };
 	self.g = function() { return G; };
 	self.b = function() { return B; };
+
+	self.srcX = function() { return X; };
+	self.srcY = function() { return Y; };
+	self.srcZ = function() { return Z; };
 
 	self.x = function( newX ) {
 		if ( typeof newX === "undefined" ) {

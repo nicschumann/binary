@@ -1,12 +1,13 @@
 var always				= function( pt ) { return true; };				
-var redOrBlue 			= function( pt ) { return pt.b() === "00"; };
+var redOrBlue 			= function( pt ) { return pt.g() === "00"; };
 var green 				= function( pt ) { return pt.r() === "00" && pt.g() === "00"; };
+var everyFourth 			= function( pt, i, j ) { return j % 2 === 0 && i % 2 === 0; };
 
-var render 				= require('./writers/renderers/blocks');
+var render 				= require('./writers/renderers/vector-lines');
 
 var args 				= require('./arguments');
 var linear 				= require('./readers/linear')();
-var renderer 			= require('./writers/book-renderer')( always, render, args.width, args.height, args.pixels, args.title );
+var renderer 			= require('./writers/book-renderer')( everyFourth, render, args.width, args.height, args.pixels, args.title );
 
 
 var encoding 			= "binary";
